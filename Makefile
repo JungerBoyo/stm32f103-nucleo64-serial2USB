@@ -1,6 +1,6 @@
-SOURCE_FILES = 						  \
-	src/main.c 								\
-	cmsis/system_stm32f1xx.c  \
+SOURCE_FILES = \
+	src/main.c \
+	cmsis/system_stm32f1xx.c \
 	cmsis/startup_stm32f103xb.s
 
 FLASH_SCRIPT = cmsis/STM32F103XB_FLASH.ld
@@ -11,8 +11,10 @@ BUILD_FOLDER = build
 CC = $(ARM_TOOLCHAIN_PATH)arm-none-eabi-gcc #-x assembler-with-cpp
 OBJCOPY = $(ARM_TOOLCHAIN_PATH)arm-none-eabi-objcopy
 
-CFLAGS  = -g -ggdb3 -O0 -I. -Wall -T$(FLASH_SCRIPT) --specs=nosys.specs 		  		#	general flags and linker script
-CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m3 -mfloat-abi=soft -DSTM32F103xB  # mcpu specific flags and defs
+# CFLAGS  = -g -ggdb3 -O0 
+CFLAGS = -O2
+CFLAGS += -I. -Wall -T$(FLASH_SCRIPT) -nolibc --specs=nosys.specs -ffreestanding #general flags and linker script
+CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m3 -mfloat-abi=soft -DSTM32F103xB  #mcpu specific flags and defs
 
 OBJECT_FILES = $(SOURCE_FILES:.c=.o)
 
@@ -34,7 +36,6 @@ flash: proj
 
 clean: proj
 	rm -f $(BUILD_FOLDER)/*.o
-
 
 
 
